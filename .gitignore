@@ -1,0 +1,5 @@
+# Ignore the bin directory
+bin/
+.vs/
+obj/
+back-end/firebase-service-account.json

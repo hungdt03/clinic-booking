@@ -55,7 +55,7 @@ const ShiftOption: FC<ShiftOptionProps> = ({
                     <p className="font-semibold text-[15px]">Buổi sáng</p>
                 </div>
             </Divider>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
                 {shifts.filter(s => s.type === "MORNING").map(shift => <Shift  onClick={() => handleCheckShift(shift)} checked={checkShift === shift.id} key={shift.id} shift={shift} />)}
 
             </div>
@@ -65,7 +65,7 @@ const ShiftOption: FC<ShiftOptionProps> = ({
                     <p className="font-semibold text-[15px]">Buổi chiều</p>
                 </div>
             </Divider>
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
                 {shifts.filter(s => s.type === "AFTERNOON").map(shift => <Shift onClick={() => handleCheckShift(shift)} checked={checkShift === shift.id} key={shift.id} shift={shift} />)}
             </div>
         </div>}

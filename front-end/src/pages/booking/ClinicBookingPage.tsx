@@ -358,10 +358,10 @@ const ClinicBookingPage: FC = () => {
         if(historyObject.length === 0) fetchBrands()
     }, [historyObject])
  
-    return <div className="w-[1200px] mx-auto mt-12">
-        <div className="flex flex-col gap-8">
+    return <div className="w-full max-w-screen-xl mx-auto p-4 lg:p-6">
+        <div className="flex flex-col gap-4 lg:gap-8">
             <Steps
-                className="text-green-500 px-14"
+                className="text-green-500 lg:px-14 mt-4"
                 size="small"
                 current={historyObject.length}
                 items={historyObject.map(history => ({
@@ -371,7 +371,7 @@ const ClinicBookingPage: FC = () => {
             />
 
             <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-7 flex flex-col gap-4">
+                <div className="col-span-12 lg:col-span-7 flex flex-col gap-4">
                     {note && <Alert className="text-left" message={note?.content} banner />}
                     {processes.some(s => s.name === "BRAND") && <BrandOption
                         isShowBody={!appointmentObject.brand?.id}
@@ -532,7 +532,7 @@ const ClinicBookingPage: FC = () => {
                     }
 
                 </div>
-                <div className="col-span-5">
+                <div className="col-span-12 lg:col-span-5">
                     <ClinicBookingInfo
                         clinicId={id}
                         loading={loading}

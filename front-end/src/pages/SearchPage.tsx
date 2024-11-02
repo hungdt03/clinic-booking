@@ -74,8 +74,8 @@ const SearchPage: FC = () => {
 
 
     return <div className="bg-white">
-        <div className="pt-8 shadow-inner border-[1px] border-gray-200">
-            <div className="w-[900px] mx-auto flex flex-col gap-4">
+        <div className="pt-8 shadow-inner border-[1px] border-gray-200 px-4 lg:px-0">
+            <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-4">
                 <div className="flex items-center justify-between px-4 py-3 bg-slate-100 rounded-3xl">
                     <input value={searchParams.query} onChange={e => setSearchParams({
                         ...searchParams,
@@ -92,8 +92,8 @@ const SearchPage: FC = () => {
                 </ul>
             </div>
         </div>
-        <div className="bg-slate-50 py-8">
-            <div className="w-[900px] mx-auto bg-white rounded-lg border-[1px] border-gray-200 pb-4">
+        <div className="bg-slate-50 py-8 lg:px-0 px-4">
+            <div className="w-full max-w-screen-lg mx-auto bg-white rounded-lg border-[1px] border-gray-200 pb-4">
                 <span className="text-left px-4 pt-3 flex items-center text-[15px]">Tìm thấy {searchResult.length} kết quả.</span>
                 <Divider className="mt-3" />
 
@@ -117,16 +117,16 @@ const SearchPage: FC = () => {
                         :
                         <div className="flex flex-col items-start justify-center gap-y-2 text-gray-700">
                             <div className="flex flex-col items-start gap-y-3 px-8">
-                                <svg className="mb-4 text-gray-400 w-24 h-24 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <svg className="mb-4 text-gray-400 w-16 h-16 lg:w-24 lg:h-24 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                 </svg>
                                 <span className="font-semibold text-[17px]">Không tìm thấy kết quả phù hợp</span>
-                                <p className="text-[15px]">Bạn có thể kiểm tra và thử lại với một số gợi ý sau:</p>
+                                <p className="text-[15px] text-left">Bạn có thể kiểm tra và thử lại với một số gợi ý sau:</p>
                                 <ul className="flex flex-col items-start text-[15px]">
-                                    <li>Kiểm tra xem từ đó có đúng chính tả không.</li>
-                                    <li>Hãy thử giảm số lượng từ trong cụm từ tìm kiếm của bạn hoặc thử tìm kiếm lại bằng cụm từ tổng quát hơn.</li>
-                                    <li>Nếu cụm từ tìm kiếm của bạn có nhiều hơn một từ, hãy kiểm tra khoảng cách.</li>
-                                    <li>Thay đổi tuỳ chọn tìm kiếm hoặc cụm từ khác phổ biến hơn.</li>
+                                    <li className="text-left">Kiểm tra xem từ đó có đúng chính tả không.</li>
+                                    <li className="text-left">Hãy thử giảm số lượng từ trong cụm từ tìm kiếm của bạn hoặc thử tìm kiếm lại bằng cụm từ tổng quát hơn.</li>
+                                    <li className="text-left">Nếu cụm từ tìm kiếm của bạn có nhiều hơn một từ, hãy kiểm tra khoảng cách.</li>
+                                    <li className="text-left">Thay đổi tuỳ chọn tìm kiếm hoặc cụm từ khác phổ biến hơn.</li>
                                 </ul>
                             </div>
                         </div>

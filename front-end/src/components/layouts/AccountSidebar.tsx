@@ -6,7 +6,7 @@ const AccountSidebar: FC = () => {
     const location = useLocation();
     console.log(location.pathname)
 
-    return <div className="flex flex-col gap-3 bg-white p-2 rounded-lg shadow">
+    return <div className="flex flex-row w-full lg:flex-col gap-3 bg-white p-2 rounded-lg shadow">
         <Link to='/account/appointment' className={cn("px-4 py-2 rounded-lg hover:bg-gray-100 text-left text-[15px]", { 'bg-gray-100': location.pathname.includes('/appointment') })}>
             Lịch khám
         </Link>

@@ -1,7 +1,7 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Divider, Radio, RadioChangeEvent } from "antd";
-import { SearchOutlined } from '@ant-design/icons'
+import { Collapse, Divider, Radio, RadioChangeEvent } from "antd";
+import { SearchOutlined, DownOutlined, UpOutlined } from '@ant-design/icons'
 import React, { FC, useEffect, useState } from "react";
 import { ClinicResource, SpecialityResource } from "../resources";
 import clinicService from "../services/clinic-service";
@@ -67,7 +67,7 @@ const SearchByClinic: FC = () => {
     }
 
     const onChange = (e: RadioChangeEvent) => {
-        const updatedParams : SearchClinicParams = {
+        const updatedParams: SearchClinicParams = {
             ...searchTerm,
             speciality: e.target.value
         }
@@ -80,7 +80,7 @@ const SearchByClinic: FC = () => {
         <div
             className="relative flex justify-center items-center p-8 text-white bg-primary"
         >
-            <div className="flex flex-col items-center justify-center gap-y-4 z-10 w-[800px] mx-auto">
+            <div className="flex flex-col items-center justify-center gap-y-4 z-10 w-full max-w-screen-md mx-auto">
                 <div className="bg-white rounded-[9999px] overflow-hidden flex items-center w-full text-black px-3">
                     <input value={searchTerm.q} onChange={e => setSearchTerm({
                         ...searchTerm,
@@ -93,24 +93,44 @@ const SearchByClinic: FC = () => {
             </div>
         </div>
 
-        <div className="w-[1200px] mx-auto grid grid-cols-12">
-            <div className="col-span-3 pr-4 border-r-[1px] border-gray-200 py-4 flex flex-col items-start gap-y-5">
-                <span className="font-medium">Chuyên khoa</span>
-                <div className="flex flex-col gap-y-3">
+        <div className="w-full max-w-screen-lg mx-auto grid grid-cols-12 px-4">
+            <div className="col-span-12 lg:col-span-3 pr-4 lg:border-r-[1px] border-gray-200 py-4 flex flex-col items-start gap-y-5">
+                <Collapse
+                    className="w-full bg-gray-50 border-none lg:hidden"
+                    expandIconPosition="right"
+                    rootClassName="bg-gray-100"
+                    expandIcon={({ isActive }) =>
+                        <DownOutlined rotate={isActive ? 180 : 0} />
+                    }
+                    items={[{
+                        key: '1', label: <span className="flex justify-start font-semibold text-[16px]">Chuyên khoa</span>, children: <div className="flex flex-col gap-y-3 bg-gray-50 p-4">
+                            <div className="bg-white flex items-center border-[1px] border-gray-400 px-3 py-2 rounded-md">
+                                <SearchOutlined />
+                                <input placeholder="Tìm nhanh chuyên khoa" className="outline-none bg-transparent w-full" />
+                            </div>
+                            <Radio.Group className="text-left max-h-[500px] overflow-y-auto custom-scrollbar scrollbar-w-2" onChange={onChange} value={searchTerm.speciality}>
+                                <div className="flex flex-col items-start gap-y-3">
+                                    {medicalSpecialities.map((speciality) => <Radio key={speciality.id} value={speciality.name}>{speciality.name}</Radio>)}
+                                </div>
+                            </Radio.Group>
+                        </div>
+                    }]}
+                />
+                <span className="font-medium hidden lg:block">Chuyên khoa</span>
+                <div className="hidden lg:flex flex-col gap-y-3">
                     <div className="flex items-center px-3 py-2 rounded-md border-[1px] border-gray-300">
                         <SearchOutlined />
                         <input placeholder="Tìm nhanh chuyên khoa" className="outline-none bg-transparent w-full" />
                     </div>
-                    <Radio.Group className="text-left h-[500px] overflow-y-auto custom-scrollbar scrollbar-w-2" onChange={onChange} value={searchTerm.speciality}>
+                    <Radio.Group className="text-left max-h-[500px] overflow-y-auto custom-scrollbar scrollbar-w-2" onChange={onChange} value={searchTerm.speciality}>
                         <div className="flex flex-col items-start gap-y-3">
                             {medicalSpecialities.map((speciality) => <Radio key={speciality.id} value={speciality.name}>{speciality.name}</Radio>)}
-
                         </div>
                     </Radio.Group>
                 </div>
             </div>
-            <div className="col-span-9">
-                <span className="block py-6 pl-6 text-left text-[17px] font-medium text-gray-500">Tìm thấy {searchResult.length} kết quả</span>
+            <div className="col-span-12 lg:col-span-9">
+                <span className="block py-2 lg:py-6 pl-6 text-left text-[15px] lg:text-[17px] font-medium text-gray-500">Tìm thấy {searchResult.length} kết quả</span>
                 <Divider className="mt-0" />
                 <div className="flex flex-col">
                     {searchResult.length > 0 ? searchResult.map(clinic => <React.Fragment key={clinic.id}>
@@ -127,7 +147,6 @@ const SearchByClinic: FC = () => {
                             </div>
                         </div>
                     }
-
 
                 </div>
             </div>

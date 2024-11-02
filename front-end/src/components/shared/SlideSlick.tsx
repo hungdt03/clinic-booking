@@ -1,5 +1,4 @@
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons/faChevronLeft';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect, useRef } from 'react';
 import cn from '../../app/components';
@@ -12,17 +11,40 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [itemWidth, setItemWidth] = useState(0);
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const itemsToShow = 4;
+    const [itemsToShow, setItemsToShow] = useState(4);
     const totalItems = React.Children.count(children);
+    const startPos = useRef(0);
+    const isDragging = useRef(false);
 
     useEffect(() => {
-        if (containerRef.current) {
+        const updateItemsToShow = () => {
+            const width = window.innerWidth;
+            if (width >= 1280) {
+                setItemsToShow(4); 
+            } else if (width >= 1024) {
+                setItemsToShow(4); 
+            } else if (width >= 768) {
+                setItemsToShow(3); 
+            } else  {
+                setItemsToShow(1);
+                setItemWidth(window.innerWidth * 0.7); 
+            } 
+        };
+
+        updateItemsToShow();
+
+        window.addEventListener('resize', updateItemsToShow);
+        return () => window.removeEventListener('resize', updateItemsToShow);
+    }, []);
+
+    useEffect(() => {
+        if (containerRef.current && itemsToShow > 1) {
             const firstChild = containerRef.current.firstElementChild as HTMLElement;
             if (firstChild) {
                 setItemWidth(firstChild.offsetWidth);
             }
         }
-    }, [children]);
+    }, [children, itemsToShow]);
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
@@ -32,8 +54,39 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
         setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, totalItems - itemsToShow));
     };
 
+    const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+        isDragging.current = true;
+        startPos.current = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    };
+
+    const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+        if (!isDragging.current) return;
+        const currentPosition = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        const distance = startPos.current - currentPosition;
+
+        // Check if enough distance is dragged to move to the next or previous slide
+        if (distance > 50) {
+            handleNext();
+            isDragging.current = false;
+        } else if (distance < -50) {
+            handlePrev();
+            isDragging.current = false;
+        }
+    };
+
+    const handleMouseUp = () => {
+        isDragging.current = false;
+    };
+
     return (
-        <div className="relative w-full">
+        <div className="relative w-full" 
+             onMouseDown={handleMouseDown}
+             onMouseMove={handleMouseMove}
+             onMouseUp={handleMouseUp}
+             onMouseLeave={handleMouseUp}
+             onTouchStart={handleMouseDown}
+             onTouchMove={handleMouseMove}
+             onTouchEnd={handleMouseUp}>
             <div className='p-1 px-2 overflow-hidden w-full'>
                 <div
                     ref={containerRef}
@@ -41,9 +94,12 @@ const Slider: React.FC<SliderProps> = ({ children }) => {
                     style={{ transform: `translateX(-${(currentIndex * (itemWidth + 18))}px)` }}
                 >
                     {React.Children.map(children, (child) => (
-                        <div className="flex-shrink-0" style={{
-                            width: 'calc(25% - 18px)'
-                        }}>
+                        <div
+                            className="flex-shrink-0"
+                            style={{
+                                width: window.innerWidth < 640 ? '70%' : `calc(${100 / itemsToShow}% - 18px)`
+                            }}
+                        >
                             {child}
                         </div>
                     ))}

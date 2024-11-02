@@ -11,7 +11,7 @@ type DoctorSearchItemProps = {
 const DoctorSearchItem: FC<DoctorSearchItemProps> = ({
     doctor
 }) => {
-    return <div className="flex justify-between items-center px-6">
+    return <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between lg:items-center px-6">
         <div className="flex items-start gap-x-4">
             <Image
                 preview={false}
@@ -29,9 +29,12 @@ const DoctorSearchItem: FC<DoctorSearchItemProps> = ({
             </div>
         </div>
 
-        <Button type="primary" className="text-[15px] px-8">
-            <Link to={`/booking/doctor/${doctor.user.id}`}>Đặt khám</Link>
-        </Button>
+
+        <div className="flex justify-end">
+            <Button type="primary" className="text-[15px] px-8">
+                <Link to={`/booking/doctor/${doctor.user.id}`}>Đặt khám</Link>
+            </Button>
+        </div>
     </div>
 };
 

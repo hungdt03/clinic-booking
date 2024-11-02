@@ -115,10 +115,11 @@ const Navbar: FC = () => {
     return <div className="flex items-center gap-x-4">
         {contextHolder}
         <div className="items-center gap-x-4 text-[16px] md:flex hidden">
-            <Popover content={<BookingOptionDialog />} placement="bottomRight">
-                <button className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer font-semibold hover:text-primary">Đặt khám</button>
-            </Popover>
+
             {isAuthenticated && <>
+                <Popover content={<BookingOptionDialog />} placement="bottomRight">
+                    <button className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer font-semibold hover:text-primary">Đặt khám</button>
+                </Popover>
                 <Badge count={notifications.filter(n => !n.haveRead).length}>
                     <Popover trigger='click' placement="topRight" content={<NotificationDialog onAllHaveRead={updateAllNotificationsHaveRead} onUpdated={updateNotification} onDelete={deleteNotification} notifications={notifications} />}>
                         <Link to='#' className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer font-semibold hover:text-primary">Thông báo</Link>
@@ -135,11 +136,11 @@ const Navbar: FC = () => {
                 <Link className="py-2 px-3 rounded-md hover:bg-gray-100" to='/auth/sign-in-admin'>Youmed Quản trị viên</Link>
             </div>
         } placement="topRight">
-            <span className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer hover:text-primary">Dành cho nhân viên y tế</span>
+            <span className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer hover:text-primary hidden lg:block">Dành cho nhân viên y tế</span>
         </Popover>}
         {isAuthenticated
             ?
-            <Popover placement="bottomRight" content={<div className="flex flex-col gap-y-2 items-start">
+            <Popover placement="bottomRight" content={<div className="flex flex-col gap-y-2 items-start w-[200px]">
                 {routeLink && <Link className="hover:text-black w-full hover:bg-gray-100 px-2 py-1 rounded-md" to={routeLink}>Trang quản lí</Link>}
                 {user?.role === 'PATIENT' && <>
                     <Link className="hover:text-black w-full hover:bg-gray-100 px-2 py-1 rounded-md" to='/account/appointment'>Lịch khám</Link>

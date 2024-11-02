@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import ProfilePatient from "../../components/shared/ProfilePatient";
-import { Alert, Button, DatePicker, Divider, Form, FormProps, Input, Radio, Select, message } from "antd";
+import { Alert, Button, DatePicker, Divider, Form, FormProps, Input, Modal, Radio, Select, message } from "antd";
 import images from "../../assets";
 import { ProfileResource } from "../../resources";
 import patientService from "../../services/patient-service";
 import dayjs, { Dayjs } from "dayjs";
 import { ethnicGroupsVietnam } from "../../data/ethnicgroup-vietnam";
+import useModal from "../../hooks/useModal";
 
 type OtherInfoProfileProps = {
     selectProfile: ProfileResource;
@@ -121,7 +122,7 @@ const FormCreateProfile: FC<FormCreateProfileProps> = ({
         if (isSuccess) {
             form.resetFields()
         }
-     
+
     };
 
     return <Form
@@ -170,7 +171,6 @@ const FormCreateProfile: FC<FormCreateProfileProps> = ({
         </Form.Item>
         <Form.Item<ProfileRequest>
             label='Giới tính'
-            className="flex justify-start"
             name='gender'
             rules={[{ required: true, message: 'Giới tính không được để trống!' }]}
         >
@@ -226,9 +226,8 @@ const FormCreateProfile: FC<FormCreateProfileProps> = ({
             <Input size="large" placeholder="Email" />
         </Form.Item>
 
-        <Form.Item<ProfileRequest>
+        {!profile?.isPrimary && <Form.Item<ProfileRequest>
             label='Mối quan hệ'
-            className="flex justify-start"
             name='relationship'
         >
             <Radio.Group className="grid grid-cols-3 gap-x-6 gap-y-4 w-full" >
@@ -252,7 +251,7 @@ const FormCreateProfile: FC<FormCreateProfileProps> = ({
                 </div>
 
             </Radio.Group>
-        </Form.Item>
+        </Form.Item>}
 
 
         <div className="flex justify-end">
@@ -265,11 +264,40 @@ const FormCreateProfile: FC<FormCreateProfileProps> = ({
     </Form>
 }
 
+type ProfileDetailsProps = {
+    profile: ProfileResource;
+    onClick: () => void;
+    handleSubmit: (values: ProfileRequest) => Promise<boolean>;
+    isShowForm: boolean;
+    isEditProfile: boolean;
+}
+
+const ProfileDetails: FC<ProfileDetailsProps> = ({
+    profile,
+    onClick,
+    isShowForm,
+    isEditProfile,
+    handleSubmit
+}) => {
+    return isShowForm ? <div>
+        <div className="flex flex-col items-start">
+            <span className="font-semibold text-lg">{isEditProfile ? 'Điều chỉnh thông tin' : 'Thêm hồ sơ mới'}</span>
+            <Divider className="my-3" />
+        </div>
+        <FormCreateProfile
+            profile={profile}
+            isEdit={isEditProfile}
+            onSubmit={handleSubmit}
+        />
+    </div> : <OtherInfoProfile onClick={onClick} selectProfile={profile} />
+}
+
 const Profile: FC = () => {
     const [profiles, setProfiles] = useState<ProfileResource[]>([])
     const [selectProfile, setSelectProfile] = useState<ProfileResource | null>(null)
     const [isShowForm, setIsShowForm] = useState<boolean>(false)
     const [isEditProfile, setIsEditProfile] = useState<boolean>(false)
+    const { isModalOpen, handleCancel, handleOk, showModal } = useModal()
 
     const fetchProfiles = async () => {
         const response = await patientService.getAllProfiles();
@@ -294,6 +322,7 @@ const Profile: FC = () => {
                 message.success(response.message);
                 setIsEditProfile(false)
                 fetchProfiles();
+                handleOk()
                 return true;
             } else {
                 message.error(response.message);
@@ -304,6 +333,7 @@ const Profile: FC = () => {
             if (response.success) {
                 message.success(response.message);
                 fetchProfiles();
+                handleOk()
                 return true;
             } else {
                 message.error(response.message);
@@ -317,21 +347,23 @@ const Profile: FC = () => {
     return <div className="flex flex-col items-start gap-y-6">
         <span className="text-xl font-medium">Hồ sơ </span>
         <div className="grid grid-cols-12 gap-4 w-full">
-            <div className="col-span-5 border-r-[0.5px] border-gray-100 w-full p-2">
+            <div className="col-span-12 lg:col-span-5 border-r-[0.5px] border-gray-100 w-full p-2">
                 <input placeholder="Mã giao dịch, tên dịch vụ, bệnh nhân" className="px-3 py-2 rounded-md w-full bg-white border-[1px] border-gray-200 outline-none" />
                 <div className="flex flex-col gap-2 py-2">
                     {profiles.map(profile => <ProfilePatient checked={profile.id == selectProfile?.id} onClick={() => {
                         setIsShowForm(false)
                         setSelectProfile(profile)
+                        showModal()
                     }} key={profile.id} profile={profile} />)}
                 </div>
                 <Divider className="mt-0" />
                 <button onClick={() => {
                     setIsEditProfile(false)
                     setIsShowForm(true)
+                    showModal()
                 }} className="py-3 px-4 rounded-md bg-blue-100 text-primary font-medium text-sm w-full hover:bg-primary hover:text-white">Thêm hồ sơ</button>
             </div>
-            <div className="col-span-7 px-4">
+            <div className="hidden lg:block lg:col-span-7 px-4">
                 {!isShowForm ? selectProfile && <OtherInfoProfile onClick={() => {
                     setIsEditProfile(true)
                     setIsShowForm(true)
@@ -349,6 +381,27 @@ const Profile: FC = () => {
                     </div>
                 }
             </div>
+
+            {window.innerWidth < 1024 && <Modal
+                open={isModalOpen}
+                onOk={handleOk}
+                style={{ top: 10 }}
+                title={<p className="text-center font-bold text-xl">{!isShowForm && 'HỒ SƠ KHÁM'}</p>}
+                onCancel={handleCancel}
+                footer={[]}
+                rootClassName="lg:hidden"
+            >
+                {selectProfile && <ProfileDetails
+                    isShowForm={isShowForm}
+                    isEditProfile={isEditProfile}
+                    handleSubmit={handleSubmit}
+                    profile={selectProfile}
+                    onClick={() => {
+                        setIsEditProfile(true)
+                        setIsShowForm(true)
+                    }}
+                />}
+            </Modal>}
         </div>
     </div>
 };

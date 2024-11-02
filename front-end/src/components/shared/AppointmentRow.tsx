@@ -20,7 +20,7 @@ const AppointmentRow: FC<AppointmentRowProps> = ({
             <span className="text-[16px] font-semibold">{!!appointment.clinic ? appointment.clinic.name : 'BS' + appointment.doctor?.user?.fullName}</span>
             <div className="text-[15px] flex items-center gap-x-3">
                 <span>{dayjs(appointment.shift.startTime, '"HH:mm:ss"').format('HH:mm')} - {dayjs(appointment.shift.endTime, '"HH:mm:ss"').format('HH:mm')}</span>
-                <span>({dayjs(appointment.appointmentDate, 'date').format('DD-MM-YYYY')})</span>
+                <span>({dayjs(appointment.appointmentDate).format('DD-MM-YYYY')})</span>
             </div>
             <span className="text-[15px]">{appointment.profile.name}</span>
             {getBookingStatus(appointment.status)}

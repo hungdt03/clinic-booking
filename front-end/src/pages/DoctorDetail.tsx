@@ -21,9 +21,9 @@ const DoctorDetail: FC = () => {
 
         fetchDoctor();
     }, [id])
-    return <div className="w-[1000px] mx-auto mt-8">
+    return <div className="w-full max-w-screen-lg mx-auto mt-8 px-4 md:px-6">
         <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-4 flex flex-col gap-y-4">
+            <div className="col-span-12 lg:col-span-4 flex flex-col gap-y-4">
                 <div className="flex flex-col gap-y-3 items-center bg-white rounded-md shadow-sm p-4">
                     <Image className='rounded-full bg-gray-400' preview={false} width='200px' height='200px' src={doctor?.user.thumbnail ?? images.doctor} />
                     <span className="font-bold text-xl">Bác sĩ {doctor?.user.fullName}</span>
@@ -37,7 +37,15 @@ const DoctorDetail: FC = () => {
                             <b>{doctor?.details.experienceYears}</b> năm kinh nghiệm
                         </p>
                     </div>
-                    <Button type="primary" className="mt-3" shape="round" size="large">
+                    <Button type="primary" className="mt-3 hidden lg:block" shape="round" size="large">
+                        <Link to={`/booking/doctor/${doctor?.user.id}`}>
+                            Đặt khám ngay
+                        </Link>
+                    </Button>
+                </div>
+
+                <div className="fixed left-0 right-0 bottom-0 p-4 bg-white shadow lg:hidden">
+                     <Button type="primary" className="mt-3 w-full" size="large">
                         <Link to={`/booking/doctor/${doctor?.user.id}`}>
                             Đặt khám ngay
                         </Link>
@@ -61,7 +69,7 @@ const DoctorDetail: FC = () => {
                 </div>}
 
             </div>
-            <div className="col-span-8 flex flex-col gap-y-6 bg-white rounded-md shadow-sm p-4">
+            <div className="col-span-12 lg:col-span-8 flex flex-col gap-y-6 bg-white rounded-md shadow-sm p-4">
                 <div className="flex flex-col items-start gap-y-4 mb-4">
                     <span className="text-lg font-semibold">Giới thiệu</span>
                     {doctor?.details.introductionHtml ? <p className="text-left prose w-full" dangerouslySetInnerHTML={{ __html: doctor?.details.introductionHtml ?? '' }}>

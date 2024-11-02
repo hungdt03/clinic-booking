@@ -63,7 +63,7 @@ const UploadMultipleFile: FC<UploadMultipleFileProps> = ({
 
     }, [valueUrls])
 
-    return <>
+    return <div className="w-full">
         {fileList.length === 0 ? (
 
             <Dragger {...props} style={{ marginBottom: '20px' }}>
@@ -100,7 +100,7 @@ const UploadMultipleFile: FC<UploadMultipleFileProps> = ({
                 )}
             </div>
         )}
-    </>
+    </div>
 };
 
 export default UploadMultipleFile;

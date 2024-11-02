@@ -80,7 +80,7 @@ const SearchByDoctor: FC = () => {
         <div
             className="relative flex justify-center items-center p-8 text-white bg-primary"
         >
-            <div className="flex flex-col items-center justify-center gap-y-4 z-10 w-[800px] mx-auto">
+            <div className="flex flex-col items-center justify-center gap-y-4 z-10 w-full max-w-screen-md mx-auto">
                 <div className="bg-white rounded-[9999px] overflow-hidden flex items-center w-full text-black px-3">
                     <input value={searchTerm.q} onChange={e => setSearchTerm({
                         ...searchTerm,

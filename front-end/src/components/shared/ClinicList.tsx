@@ -23,7 +23,7 @@ const ClinicList: FC = () => {
         <div className="flex justify-between items-center w-full">
             <div className="flex flex-col items-start">
                 <p className="text-xl font-bold">Đặt khám phòng khám</p>
-                <p className="text-[15px]">Đa dạng phòng khám với nhiều chuyên khoa khác nhau như Sản - Nhi, Tai Mũi họng, Da Liễu, Tiêu Hoá...</p>
+                <p className="text-[15px] hidden lg:block">Đa dạng phòng khám với nhiều chuyên khoa khác nhau như Sản - Nhi, Tai Mũi họng, Da Liễu, Tiêu Hoá...</p>
             </div>
             <Button shape="round" type="primary">
                 <Link to='/booking/clinic'>Xem thêm</Link>

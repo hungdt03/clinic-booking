@@ -31,8 +31,8 @@ const DoctorList: FC<DoctorListProps> = ({
     return doctors.length > 0 && <div className="flex flex-col items-start gap-y-8">
         <div className="flex justify-between items-center w-full">
             <div className="flex flex-col items-start">
-                <p className="text-xl font-bold">Đặt khám bác sĩ</p>
-                <p className="text-[15px]">Phiếu khám kèm số thứ tự và thời gian của bạn được xác nhận.</p>
+                <p className="text-lg lg:text-xl font-semibold lg:font-bold">Đặt khám bác sĩ</p>
+                <p className="text-[15px] hidden lg:block">Phiếu khám kèm số thứ tự và thời gian của bạn được xác nhận.</p>
             </div>
             <Button shape="round" type="primary">
                 <Link to='/booking/doctor'>Xem thêm</Link>

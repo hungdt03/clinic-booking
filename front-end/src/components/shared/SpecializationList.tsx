@@ -33,12 +33,12 @@ const SpecializationList: FC<SpecializationListProps> = ({
     return specialities.length > 0 && <div className="flex flex-col items-start gap-y-8">
         <div className="flex justify-between items-center w-full">
             <div className="flex flex-col items-start">
-                <p className="text-xl font-bold">Đặt lịch theo Chuyên khoa</p>
-                <p className="text-[15px]">Danh sách bác sĩ, phòng khám theo chuyên khoa.</p>
+                <p className="text-lg lg:text-xl font-semibold lg:font-bold">Đặt lịch theo Chuyên khoa</p>
+                <p className="text-[15px] hidden lg:block">Danh sách bác sĩ, phòng khám theo chuyên khoa.</p>
             </div>
             <Button shape="round" type="primary">Xem thêm</Button>
         </div>
-        <div className="grid grid-cols-6 gap-6">
+        <div className="grid md:grid-cols-6 grid-cols-3 lg:grid-cols-6 gap-6">
             {specialities.map(speciality => <BookSpecializationAppointment onClick={() => onClick(speciality)} key={speciality.id} speciality={speciality} />)}
         </div>
     </div>

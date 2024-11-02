@@ -61,8 +61,8 @@ const ContactPage: FC = () => {
         })
     }
 
-    return <div className="flex flex-col h-full relative">
-        <div className="flex items-center justify-between shadow-md bg-white border-[1px] border-gray-200 p-2">
+    return <div className="flex flex-col h-full relative border-[1px] border-gray-100">
+        <div className="flex items-center justify-between bg-white border-[1px] border-gray-200 p-2">
             <div className="flex items-center gap-x-2 hover:bg-gray-100 p-2 rounded-md">
                 <div className="relative">
                     <Avatar
@@ -98,6 +98,7 @@ const ContactPage: FC = () => {
             <Input
                 placeholder="Soạn tin nhắn..."
                 showCount
+                size="large"
                 value={message.content}
                 onChange={(e) => setMessage({
                     ...message,

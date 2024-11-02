@@ -26,7 +26,7 @@ const ClinicDetail: FC = () => {
 
         fetchClinicById();
     }, [id])
-    return <div className="w-[1000px] mx-auto">
+    return <div className="w-full max-w-screen-lg mx-auto px-4 md:px-0">
         <Breadcrumb
             items={[
                 {
@@ -40,12 +40,19 @@ const ClinicDetail: FC = () => {
         />
 
         <div className="flex flex-col gap-y-8">
-            <div className="flex items-start justify-between">
-                <div className="flex items-center gap-x-6 justify-start">
+            <div className="h-[30%] block lg:hidden">
+                <Carousel autoplay>
+                    {clinic?.images.map(image => <div className="rounded-xl overflow-hidden" key={image}>
+                        <img width={'100%'} height={'100%'} className="object-cover rounded-xl overflow-hidden" style={contentStyle} src={image} alt="Slide" />
+                    </div>)}
+                </Carousel>
+            </div>
+            <div className="flex items-start justify-center lg:justify-between">
+                <div className="flex flex-col lg:flex-row items-center gap-x-6 justify-start">
                     <Image preview={false} width={120} height={120} className="rounded-full object-cover" src={clinic?.thumbnailUrl ?? images.clinic} />
                     <div className="flex flex-col items-start gap-y-4">
                         <span className="text-2xl font-bold">{clinic?.name}</span>
-                        <Link to='#' className="py-1 px-2 border-[2px] border-gray-200 rounded-3xl flex items-center gap-x-1">
+                        <Link to='#' className="hidden lg:flex py-1 px-2 border-[2px] border-gray-200 rounded-3xl items-center gap-x-1">
                             <img alt="Địa chỉ" src={images.address} width={18} />
                             <Tooltip title={clinic?.address}>
                                 <span className="text-[16px]">Địa chỉ</span>
@@ -53,11 +60,16 @@ const ClinicDetail: FC = () => {
                         </Link>
                     </div>
                 </div>
-                <Button shape="round">
+                <Button shape="round" className="hidden">
                     Yêu thích
                 </Button>
             </div>
-
+            <Link to='#' className="flex lg:hidden py-1 px-2 border-[2px] border-gray-200 rounded-3xl items-center gap-x-1">
+                <img alt="Địa chỉ" src={images.address} width={18} />
+                <Tooltip title={clinic?.address}>
+                    <span className="text-[16px]">Địa chỉ</span>
+                </Tooltip>
+            </Link>
             <div>
                 <Divider className="my-2" />
                 <div className="flex items-center gap-x-4">
@@ -67,15 +79,22 @@ const ClinicDetail: FC = () => {
                 <Divider className="my-2" />
             </div>
 
-            <div className="">
+            <div className="hidden lg:block">
                 <Carousel autoplay>
                     {clinic?.images.map(image => <div className="rounded-xl overflow-hidden" key={image}>
                         <img width={'100%'} height={'100%'} className="object-cover rounded-xl overflow-hidden" style={contentStyle} src={image} alt="Slide" />
                     </div>)}
                 </Carousel>
             </div>
-            <div className="flex justify-end">
+            <div className="justify-end hidden lg:flex">
                 <Button className="px-32 text-[16px]" size="large" type="primary" >
+                    <Link to={`/booking/clinic/${clinic?.id}`}>
+                        Đặt khám ngay
+                    </Link>
+                </Button>
+            </div>
+            <div className="lg:hidden fixed left-0 bottom-0 right-0 bg-white shadow p-4">
+                <Button className="text-[16px] w-full" size="large" type="primary" >
                     <Link to={`/booking/clinic/${clinic?.id}`}>
                         Đặt khám ngay
                     </Link>
@@ -93,7 +112,7 @@ const ClinicDetail: FC = () => {
                     {clinic?.specializations.map(spec => <ServiceTag prefixUrl="/booking/clinic" key={spec.id} speciality={spec} />)}
                 </div>
             </div>}
-            
+
         </div>
     </div>
 };

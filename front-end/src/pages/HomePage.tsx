@@ -15,9 +15,9 @@ const HomePage: FC = () => {
             onChange={val => setValue(val)}
             onSubmit={() => navigate(`/search?q=${value}&type=all`)}
         />
-        <div className="flex flex-col gap-y-16 py-8 w-[1200px] mx-auto">
+        <div className="flex flex-col gap-y-16 py-8 w-full max-w-screen-xl mx-auto px-6 md:px-8 lg:px-6">
             <section className="flex flex-col gap-y-3">
-                <p className="text-4xl font-bold">Đặt lịch khám trực tuyến</p>
+                <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">Đặt lịch khám trực tuyến</p>
                 <p className="text-gray-500 text-[17px]">Tìm Bác sĩ chính xác - Đặt lịch khám dễ dàng</p>
             </section>
             <DoctorList isTab={false} />

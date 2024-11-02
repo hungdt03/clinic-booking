@@ -194,7 +194,7 @@ const CalendarBooking: FC<CalendarBookingProps> = ({
             mode="month"
             headerRender={() => ''}
             value={currentDate}
-            className="text-[15px] border-[1px] border-gray-200"
+            className="text-[12px] lg:text-[15px] border-[1px] border-gray-200"
             locale={locale}
             fullCellRender={
                 (date: dayjs.Dayjs) => getCellDate(date, currentDate, value, dates, onSelectDate)

@@ -14,7 +14,6 @@ const ContactSidebar: FC = () => {
 
     const fetchUserContacts = async () => {
         const response = await groupService.getAllGroupsPatient();
-        console.log(response)
         if(response.success) {
             setUserContacts(response.data);
         }
@@ -24,7 +23,7 @@ const ContactSidebar: FC = () => {
         fetchUserContacts();
     }, [])
 
-    return <div className="col-span-4 h-full">
+    return <div className="col-span-4 h-full shadow">
         <div className="z-10 bg-white p-4">
             <Title level={4} className="text-left">Liên hệ hỗ trợ</Title>
             <Input placeholder="Nhập từ khóa tìm kiếm" prefix={<SearchOutlined />} />

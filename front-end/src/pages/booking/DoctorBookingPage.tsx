@@ -78,7 +78,9 @@ const DoctorBookingPage: FC = () => {
 
             if (data.length > 0) {
                 const findEmptyDate = data.find(item => item.shifts.length > 0)
-                setFirstDate(findEmptyDate ?? null)
+                if (findEmptyDate) {
+                    setFirstDate(findEmptyDate)
+                }
             }
 
             setEmptyDates(data)
@@ -106,15 +108,27 @@ const DoctorBookingPage: FC = () => {
         })
     }, [doctor])
 
+    useEffect(() => {
+        const resetAppointment = {
+            ...initialValues,
+            appointmentDate: firstDate?.day
+        }
+        setAppointmentRequest(resetAppointment)
+
+        setHistory([
+            {
+                key: 'appointmentDate',
+                title: 'Ngày khám',
+                value: resetAppointment
+            },
+        ])
+    }, [emptyDates])
+
     const handleChange = (name: string, title: string, value: any) => {
         const index = history.findIndex(h => h.key === name);
 
         const updatedAppointment = {
-            ...(
-                name === 'appointmentDate'
-                    ? initialValues
-                    : appointmentRequest
-            ),
+            ...appointmentRequest,
             [name]: value
         };
 
@@ -123,7 +137,7 @@ const DoctorBookingPage: FC = () => {
                 const updatedHistory = [...prev];
                 updatedHistory[index].value = updatedAppointment
                 updatedHistory[index].title = title
-                return prev;
+                return updatedHistory;
             })
 
         } else {
@@ -185,10 +199,6 @@ const DoctorBookingPage: FC = () => {
 
         if (response.success) {
             message.success(response.message)
-
-            setAppointmentRequest({
-                ...initialValues,
-            })
             setIsShowDate(true)
             fetchEmptyDays()
         } else {
@@ -196,10 +206,10 @@ const DoctorBookingPage: FC = () => {
         }
     }
 
-    return <div className="w-[1200px] mx-auto mt-12">
-        <div className="flex flex-col gap-8">
+    return <div className="w-full max-w-screen-xl mx-auto lg:mt-2 px-4 lg:p-6">
+        <div className="flex flex-col gap-4 lg:gap-8 mt-4">
             <Steps
-                className="text-green-500 px-14"
+                className="text-green-500 lg:px-14"
                 size="small"
                 current={1}
                 items={history.map(item => ({
@@ -210,7 +220,7 @@ const DoctorBookingPage: FC = () => {
 
 
             <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-7 flex flex-col gap-4">
+                <div className="col-span-12 lg:col-span-7 flex flex-col gap-4">
                     <Alert className="text-center" message={note?.content} banner />
                     {(firstDate) ? <DateBookingOption
                         value={firstDate}
@@ -274,7 +284,7 @@ const DoctorBookingPage: FC = () => {
                         </>
                     }
                 </div>
-                <div className="col-span-5">
+                <div className="col-span-12 lg:col-span-5">
                     <div className="bg-white py-4 rounded-xl shadow">
                         <span className="font-semibold text-left block px-4">Thông tin đặt khám</span>
                         <Divider className="mt-3" />
@@ -294,9 +304,9 @@ const DoctorBookingPage: FC = () => {
                         </div>
                         <Divider />
                         <div className="flex flex-col gap-y-3 text-[16px] px-4 pb-4">
-                            {!!firstDate && <div className="flex items-center justify-between">
+                            {!!appointmentRequest.appointmentDate && <div className="flex items-center justify-between">
                                 <span>Ngày khám</span>
-                                <span className="font-medium">{dayjs(firstDate.day).format('DD/MM/YYYY')}</span>
+                                <span className="font-medium">{dayjs(appointmentRequest.appointmentDate).format('DD/MM/YYYY')}</span>
                             </div>}
                             {!!appointmentRequest.shift && <div className="flex items-center justify-between">
                                 <span>Khung giờ</span>

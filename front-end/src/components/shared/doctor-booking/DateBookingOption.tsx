@@ -63,7 +63,7 @@ const DateBookingOption: FC<DateBookingOptionProps> = ({
                             <p className="font-semibold text-[15px]">Buổi sáng</p>
                         </div>
                     </Divider>
-                    <div className="grid grid-cols-6 gap-3">
+                    <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                         {value.shifts.filter(shift => shift.type === "MORNING").map(shift => <Shift checked={shiftValue == shift.id} onClick={() => onShiftChange(shift)} key={shift.id} shift={shift} />)}
                     </div>
                 </>
@@ -76,7 +76,7 @@ const DateBookingOption: FC<DateBookingOptionProps> = ({
                         <p className="font-semibold text-[15px]">Buổi chiều</p>
                     </div>
                 </Divider>
-                <div className="grid grid-cols-6 gap-3">
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                     {value.shifts.filter(shift => shift.type === "AFTERNOON").map(shift => <Shift checked={shiftValue == shift.id} onClick={() => onShiftChange(shift)} key={shift.id} shift={shift} />)}
                 </div>
             </>
